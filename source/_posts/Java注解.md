@@ -9,7 +9,7 @@ categories: Java
 　　注解作用：每当你创建描述符性质的类或者接口时,一旦其中包含重复性的工作，就可以考虑使用注解来简化与自动化该过程。  
 Java提供了四种元注解，专门负责新注解的创建工作。  
 
-**** 元注解 ****  
+# 元注解 #  
 　　元注解的作用就是负责注解其他注解。Java5.0定义了4个标准的meta-annotation类型，它们被用来提供对其它 annotation类型作说明。Java5.0定义的元注解：  
 　　　　1. @Target  
 　　　　2. @Retention  
@@ -18,16 +18,16 @@ Java提供了四种元注解，专门负责新注解的创建工作。
 　　这些类型和它们所支持的类在java.lang.annotation包中可以找到。下面我们看一下每个元注解的作用和相应分参数的使用说明。
 
 <!--more-->
-@Target<br>
+## @Target ##
 　　@Target说明了Annotation所修饰的对象范围：Annotation可被用于 packages、types（类、接口、枚举、Annotation类型）、类型成员（方法、构造方法、成员变量、枚举值）、方法参数和本地变量（如循环变量、catch参数）。在Annotation类型的声明中使用了target可更加明晰其修饰的目标。  
 　　作用：用于描述注解的使用范围（即：被描述的注解可以用在什么地方，取值(ElementType)有：  
-　　　　1. CONSTRUCTOR:用于描述构造器<br>
-　　　　2. FIELD:用于描述域<br>
-　　　　3. LOCAL_VARIABLE:用于描述局部变量<br>
-　　　　4. METHOD:用于描述方法<br>
-　　　　5. PACKAGE:用于描述包<br>
-　　　　6. PARAMETER:用于描述参数<br>
-　　　　7. TYPE:用于描述类、接口(包括注解类型) 或enum声明<br>
+　　　　1. CONSTRUCTOR:用于描述构造器  
+　　　　2. FIELD:用于描述域  
+　　　　3. LOCAL_VARIABLE:用于描述局部变量  
+　　　　4. METHOD:用于描述方法  
+　　　　5. PACKAGE:用于描述包  
+　　　　6. PARAMETER:用于描述参数  
+　　　　7. TYPE:用于描述类、接口(包括注解类型) 或enum声明  
 
 使用示例：
 ```
@@ -60,12 +60,13 @@ public @interface Entity {
 }
 ```
 
-@Retention  
+## @Retention ##
 　　@Retention定义了该Annotation被保留的时间长短：某些Annotation仅出现在源代码中，而被编译器丢弃；而另一些却被编译在class文件中；编译在class文件中的Annotation可能会被虚拟机忽略，而另一些在class被装载时将被读取（请注意并不影响class的执行，因为Annotation与class在使用上是被分离的）。使用这个meta-Annotation可以对 Annotation的“生命周期”限制。  
 　　作用：表示需要在什么级别保存该注释信息，用于描述注解的生命周期（即：被描述的注解在什么范围内有效）,取值（RetentionPoicy）有：  
-　　　　1. SOURCE:在源文件中有效（即源文件保留）<br>
-　　　　2. CLASS:在class文件中有效（即class保留）<br>
-　　　　3. RUNTIME:在运行时有效（即运行时保留）<br>
+　　　　1. SOURCE:在源文件中有效（即源文件保留）  
+　　　　2. CLASS:在class文件中有效（即class保留）  
+　　　　3. RUNTIME:在运行时有效（即运行时保留）  
+
 
 
 
@@ -82,17 +83,17 @@ public @interface Column {
 ```
 Column注解的的RetentionPolicy的属性值是RUNTIME,这样注解处理器可以通过反射，获取到该注解的属性值，从而去做一些运行时的逻辑处理
 
-@Documented  
+## @Documented ##
 　　@Documented用于描述其它类型的annotation应该被作为被标注的程序成员的公共API，因此可以被例如javadoc此类的工具文档化。Documented是一个标记注解，没有成员。
 
-@Inherited  
+## @Inherited ##
 　　@Inherited 元注解是一个标记注解，@Inherited阐述了某个被标注的类型是被继承的。如果一个使用了@Inherited修饰的annotation类型被用于一个class，则这个annotation将被用于该class的子类。  
 　　注意：@Inherited annotation类型是被标注过的class的子类所继承。类并不从它所实现的接口继承annotation，方法并不从它所重载的方法继承annotation。  
 　　当@Inherited annotation类型标注的annotation的Retention是RetentionPolicy.RUNTIME，则反射API增强了这种继承性。如果我们使用java.lang.reflect去查询一个@Inherited annotation类型的annotation时，反射代码检查将展开工作：检查class和其父类，直到发现指定的annotation类型被发现，或者到达类继承结构的顶层。
 
 
 
-**** 自定义注解 ****  
+# 自定义注解 #  
 　　使用@interface自定义注解时，自动继承了java.lang.annotation.Annotation接口，由编译程序自动完成其他细节。在定义注解时，不能继承其他的注解或接口。@interface用来声明一个注解，其中的每一个方法实际上是声明了一个配置参数。方法的名称就是参数的名称，返回值类型就是参数的类型（返回值类型只能是基本类型、Class、String、enum）。可以通过default来声明参数的默认值。
 
 　　定义注解格式：public @interface 注解名 {定义体}
@@ -146,20 +147,20 @@ public @interface Transient {
 
 　　Java使用Annotation接口来代表程序元素前面的注解，该接口是所有Annotation类型的父接口。除此之外，Java在java.lang.reflect 包下新增了AnnotatedElement接口，该接口代表程序中可以接受注解的程序元素，该接口主要有如下几个实现类：
 
-　　Class：类定义<br>
-　　Constructor：构造器定义<br>
-　　Field：类的成员变量定义
-　　Method：类的方法定义
+　　Class：类定义  
+　　Constructor：构造器定义  
+　　Field：类的成员变量定义  
+　　Method：类的方法定义  
 　　Package：类的包定义
 
 　　java.lang.reflect 包下主要包含一些实现反射功能的工具类，实际上，java.lang.reflect 包所有提供的反射API扩充了读取运行时Annotation信息的能力。当一个Annotation类型被定义为运行时的Annotation后，该注解才能是运行时可见，当class文件被装载时被保存在class文件中的Annotation才会被虚拟机读取。  
 
 　　AnnotatedElement 接口是所有程序元素（Class、Method和Constructor）的父接口，所以程序通过反射获取了某个类的AnnotatedElement对象之后，程序就可以调用该对象的如下四个个方法来访问Annotation信息：
 
-　　方法1：<T extends Annotation> T getAnnotation(Class<T> annotationClass): 返回改程序元素上存在的、指定类型的注解，如果该类型注解不存在，则返回null。<br>
-　　方法2：Annotation[] getAnnotations():返回该程序元素上存在的所有注解。<br>
-　　方法3：boolean is AnnotationPresent(Class<?extends Annotation> annotationClass):判断该程序元素上是否包含指定类型的注解，存在则返回true，否则返回false.<br>
-　　方法4：Annotation[] getDeclaredAnnotations()：返回直接存在于此元素上的所有注释。与此接口中的其他方法不同，该方法将忽略继承的注释。（如果没有注释直接存在于此元素上，则返回长度为零的一个数组。）该方法的调用者可以随意修改返回的数组；这不会对其他调用者返回的数组产生任何影响。<br>
+　　方法1：<T extends Annotation> T getAnnotation(Class<T> annotationClass): 返回改程序元素上存在的、指定类型的注解，如果该类型注解不存在，则返回null。  
+　　方法2：Annotation[] getAnnotations():返回该程序元素上存在的所有注解。  
+　　方法3：boolean is AnnotationPresent(Class<?extends Annotation> annotationClass):判断该程序元素上是否包含指定类型的注解，存在则返回true，否则返回false.  
+　　方法4：Annotation[] getDeclaredAnnotations()：返回直接存在于此元素上的所有注释。与此接口中的其他方法不同，该方法将忽略继承的注释。（如果没有注释直接存在于此元素上，则返回长度为零的一个数组。）该方法的调用者可以随意修改返回的数组；这不会对其他调用者返回的数组产生任何影响。  
 
 　　一个简单的注解处理器：
 ```
